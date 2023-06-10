@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Info</title>
+
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+
+    <link rel="icon" href="medical.png" />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@200;300;400;500;600;700;800&display=swap");
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      body {
+        background: url("main-img.jpg") no-repeat;
+
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      .up {
+        max-width: 400px;
+        height: 550px;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+        margin-top: 20vh;
+
+        box-shadow: 3px 3px 10px rgb(135, 220, 223);
+
+        border-radius: 15px;
+      }
+
+      .title {
+        color: #ffffff;
+        font-size: 25px;
+        font-weight: bold;
+      }
+
+      .form {
+        margin-top: 25px;
+        margin-left: 20px;
+        width: 250px;
+      }
+
+      .form .input-field {
+        position: relative;
+        height: 50px;
+        width: 100%;
+        margin-top: 30px;
+      }
+
+      .input-field input {
+        position: absolute;
+        height: 100%;
+        width: 280px;
+        padding: 0 35px 0 20px;
+        margin-left: 10px;
+        outline: none;
+        font-size: 16px;
+      }
+
+      @media only screen and (max-width: 360px) {
+        .input-field input {
+          padding: 0 10px 0 10px;
+        }
+      }
+
+      fieldset {
+        background-color: white;
+        width: 280px;
+        height: 30px;
+        margin: 10px 0 30px 10px;
+        padding: 5px 5px 10px 5px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      label {
+        margin-right: 20px;
+        font-size: 17px;
+      }
+      .gender {
+        color: rgb(95, 93, 93);
+      }
+      .input-field .gg {
+        width: auto;
+        height: auto;
+        position: relative;
+        right: 10px;
+        top: 2px;
+      }
+
+      .bb {
+        width: fit-content;
+        width: 200px;
+        padding: 11px;
+        margin-top: 20px;
+        margin-left: 75px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+      }
+      @media only screen and (max-width: 360px) {
+        .gg {
+          width: 247px;
+        }
+        /* .option{
+          width: 274px;
+          margin-left: -20px;
+        } */
+        .bb {
+          width: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Details Form -->
+    <div id="enterDetails" class="up">
+      <div class="form">
+        <span class="title">Fill This Form Please</span>
+
+        <form action="Report.html" id="form1" method="get">
+          <div class="input-field">
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              placeholder="Full Name"
+              required
+              autocomplete="on"
+            />
+          </div>
+          <div class="input-field">
+            <input
+              id="dateOfBirth"
+              name="dateOfBirth"
+              type="date"
+              placeholder="Date-Of-Birth"
+              required
+            />
+          </div>
+          <div class="input-field">
+            <input
+              id="enterAge"
+              name="age"
+              type="number"
+              placeholder="Age"
+              min="1"
+              max="100"
+              required
+              oninput="validity.valid||(value='');"
+            />
+          </div>
+
+          <div class="input-field">
+            <input
+              id="enterHighet"
+              name="height"
+              type="number"
+              placeholder="Highet in cm"
+              min="100"
+              max="250"
+              required
+              oninput="validity.valid||(value='');"
+            />
+          </div>
+
+          <div class="input-field Gender">
+            <fieldset id="set">
+              <input
+                name="gender"
+                class="gg"
+                id="male"
+                type="radio"
+                value="male"
+                required
+              />
+              <label class="gender" for="male">Male</label>
+              <input
+                name="gender"
+                class="gg"
+                id="female"
+                type="radio"
+                value="female"
+                required
+              />
+              <label class="gender" for="Female">Female</label>
+            </fieldset>
+          </div>
+
+          <div class="button">
+            <input id="submit" class="bb" type="submit" value="Enter" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // checkbox for gender //
+
+      const set = document.getElementById("set");
+      const inputs = set.getElementsByTagName("input");
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener("click", function () {
+          for (let j = 0; j < inputs.length; j++) {
+            if (inputs[j] !== this) {
+              inputs[j].checked = false;
+            }
+          }
+        });
+      }
+
+      //  passing the data to the next page //
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+
+      const fullName = urlParams.get("fullName");
+      const dateOfBirth = urlParams.get("dateOfBirth");
+      const age = urlParams.get("age");
+      const height = urlParams.get("height");
+      const gender = urlParams.get("gender");
+
+      console.log(`Full Name: ${fullName}`);
+      console.log(`Date of Birth: ${dateOfBirth}`);
+      console.log(`Age: ${age}`);
+      console.log(`Height: ${height}`);
+      console.log(`Gender: ${gender}`);
+    </script>
+  </body>
+</html>

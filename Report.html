@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report</title>
+    <link rel="icon" href="medical.png" />
+    <link rel="stylesheet" href="loading.css" />
+  </head>
+  <body>
+    <section id="loading" class="body">
+      <div class="container">
+        <div class="text">
+          <h1>Loading...</h1>
+        </div>
+        <div class="loading">
+          <div class="line-box">
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="page-details">
+      <section class="main-info">
+        <header>
+          <h2>
+            Predict obstructive and non-obstructive pulmonary diseases using
+            spirometry
+          </h2>
+        </header>     
+        <main>
+          <h1>patient details</h1>
+          <div id="formResults"></div>
+        </main>
+      </section>
+      <form action="" method="post">
+        <table class="form" id="stable">
+          <tbody>
+            <tr>
+              <th rowspan="2">Measurement</th>
+              <th colspan="2">Pre-bronchodilator</th>
+            </tr>
+            <tr>
+              <th>Value</th>
+              <th>Pred %</th>
+            </tr>
+            <tr>  
+              <td class="first-td">FEV1 - Forced Expiratory Volume</td>
+              <td>
+                <input
+                  type="number"
+                  id="inp0"
+                  class="full"
+                  min="0"
+                  step="0.001"
+                  name="fev1_pre_value"
+                  required
+                  readonly
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="inp1"
+                  class="full"
+                  min="0"
+                  name="fev1_pre_pecent"
+                  required
+                  readonly
+                />
+              </td>
+            </tr>
+            <tr id="diff">
+              <td class="first-td">FVC - Forced Vital Capacity</td>
+              <td>
+                <input
+                  type="number"
+                  id="inp4"
+                  class="full"
+                  min="0"
+                  step="0.001"
+                  name="fvc_pre_value"
+                  required
+                  readonly
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="inp5"
+                  class="full"
+                  min="0"
+                  name="fvc_pre_percent"
+                  required
+                  readonly
+                />
+              </td>
+            </tr>
+            <tr>
+              <td class="first-td">FEF 25-75% - Forced Expiratory Flow</td>
+              <td>
+                <input
+                  type="number"
+                  id="inp8"
+                  class="full"
+                  min="0"
+                  step="0.001"
+                  name="fef_pre_value"
+                  required
+                  readonly
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  id="inp9"
+                  class="full"
+                  min="0"
+                  name="fef_pre_percent"
+                  required
+                  readonly
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <br />
+        <input type="hidden" id="query" name="query" value="0" />
+        <section class="twoButtons">
+          <div>
+            <input
+            class="submit"
+            type="submit"
+            value="Submit"
+            onclick="document.getElementById('query').value='1';"
+            formaction="res-obs.html" 
+          />
+            <!-- <input class="submit" type="reset" value="Reset" /> -->
+            <!-- <input id="aii-img" class="submit" type="reset" value="Try Advanced" onclick="myimg()"/> -->
+          </div>
+        </section>
+      </form>
+    </section>
+
+    <script>
+      //  passing the data to the next page //
+
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+
+      const fullName = urlParams.get("fullName");
+      const dateOfBirth = new Date(urlParams.get("dateOfBirth"));
+      const formattedDateOfBirth = `${("0" + dateOfBirth.getDate()).slice(
+        -2
+      )}-${("0" + (dateOfBirth.getMonth() + 1)).slice(
+        -2
+      )}-${dateOfBirth.getFullYear()}`;
+      const age = urlParams.get("age");
+      const height = urlParams.get("height");
+      const gender = urlParams.get("gender");
+
+      const formResults = document.getElementById("formResults");
+      formResults.innerHTML = `
+      <p><span>Full Name:</span> ${fullName}</p>
+      <p><span>Date of Birth:</span> ${formattedDateOfBirth}</p>
+      <p><span>Age:</span> ${age}</p>
+      <p><span>Height:</span> ${height}</p>
+      <p><span>Gender:</span> ${gender}</p>
+      `;
+      // make the page loading for a period of time before its details appear
+
+      // Hide the page details section initially
+      document.getElementById("page-details").style.display = "none";
+
+      // Wait for 5 seconds before showing the page details section
+      setTimeout(function () {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("page-details").style.display = "block";
+      }, 5000); // 5000 milliseconds = 5 seconds
+
+    </script>
+
+<script type="module">
+      
+  //................Iniliatize Firebase.........................//
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    
+    const firebaseConfig = {
+    apiKey: "AIzaSyB_1Sb44n6qSYyNWF6qi8eOKbOOY8lZU8o",
+    authDomain: "test-899e1.firebaseapp.com",
+    databaseURL: "https://test-899e1-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "test-899e1",
+    storageBucket: "test-899e1.appspot.com",
+    messagingSenderId: "59726049410",
+    appId: "1:59726049410:web:661c74b5f6b2723d26449b"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    
+   import {getDatabase, ref, child, onValue, get}
+   from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"
+
+    const db= getDatabase();
+    var FEV1= document.querySelector("#inp0");
+    var FVC= document.querySelector("#inp4");
+    var FEF= document.querySelector("#inp8");
+
+    var FEV1prid= document.querySelector("#inp1");
+    var FVCprid= document.querySelector("#inp5");
+    var FEFprid= document.querySelector("#inp9");
+
+    const dbRef=ref(db,"spiro_readings");
+    
+    onValue(dbRef,(snapshot)=>{
+
+      const dbRef = ref(db);
+      get(child(dbRef,"spiro_readings"))
+      .then((snapshot)=>{ 
+        FEV1.value= snapshot.val().FEV1;
+        FVC.value= snapshot.val().FVC;
+        FEF.value= snapshot.val().FEF;
+
+      })
+
+    })
+  </script>
+</body>
+</html>
+
+ 
